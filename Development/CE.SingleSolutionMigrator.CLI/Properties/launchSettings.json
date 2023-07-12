@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CE.SingleSolutionMigrator.CLI": {
+      "commandName": "Project",
+      "commandLineArgs": "-r \"C:\\OpenFlows\\Aspen"
+    }
+  }
+}

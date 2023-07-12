@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\..\_Targets\CommonPropertiesBitSpecific.targets" />
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CE.SingleSolutionMigrator\CE.SingleSolutionMigrator.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include=".editorconfig" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CommandLineParser" Version="2.9.1" />
+      <PackageReference Include="Microsoft.Build" Version="17.6.3" />
+      <PackageReference Include="p4api.net" Version="2023.1.245.6134" />
+    </ItemGroup>
+
+</Project>

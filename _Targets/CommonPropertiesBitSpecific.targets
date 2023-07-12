@@ -1,0 +1,18 @@
+<Project>
+    <PropertyGroup>
+        <TargetFramework>net7.0-windows</TargetFramework>
+        <Platforms>x64</Platforms>
+        <RuntimeIdentifiers>win7-x64</RuntimeIdentifiers>
+        <OutputPath>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\..\Output\$(MSBuildProjectName)\bin\$(Platform)\$(Configuration)\'))</OutputPath>
+        <IntermediateOutputPath>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\..\Output\$(MSBuildProjectName)\obj\$(Platform)\$(Configuration)\'))</IntermediateOutputPath>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <BaseAddress>285212672</BaseAddress>
+        <FileAlignment>4096</FileAlignment>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <IsTestProject>false</IsTestProject>
+    </PropertyGroup>
+</Project>

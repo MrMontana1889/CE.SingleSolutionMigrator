@@ -1,0 +1,19 @@
+<Project>
+    <PropertyGroup>
+        <TargetFrameworks>net7.0-windows</TargetFrameworks>
+        <SupportedPlatform>windows</SupportedPlatform>
+        <Platforms>AnyCPU</Platforms>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <OutputPath>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\..\Output\$(MSBuildProjectName)\bin\$(Configuration)\$(TargetFramework)'))</OutputPath>
+        <IntermediateOutputPath>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\..\Output\$(MSBuildProjectName)\obj\$(TargetFramework)'))</IntermediateOutputPath>
+        <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <BaseAddress>285212672</BaseAddress>
+        <FileAlignment>4096</FileAlignment>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <IsTestProject>false</IsTestProject>
+    </PropertyGroup>
+</Project>
