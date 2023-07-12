@@ -1,0 +1,21 @@
+﻿extensions: designer.cs generated.cs
+extensions: .cs .cpp .h
+// %FileName%
+// Copyright (c) %CurrentYear% Kris Culin. All Rights Reserved.
+
+extensions: .aspx .ascx
+<%-- 
+%FileName%
+Copyright (c) %CurrentYear% Kris Culin. All Rights Reserved.
+
+--%>
+extensions: .vb
+' %FileName%
+' Copyright (c) %CurrentYear% Kris Culin. All Rights Reserved.
+
+extensions:  .xml .config .xsd
+<!--
+%FileName%
+Copyright (c) %CurrentYear% Kris Culin. All Rights Reserved.
+
+-->

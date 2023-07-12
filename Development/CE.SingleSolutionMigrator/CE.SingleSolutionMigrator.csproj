@@ -6,4 +6,18 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+        <None Include=".editorconfig" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Tools\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Build" Version="17.6.3" />
+      <PackageReference Include="p4api.net" Version="2023.1.245.6134" />
+      <PackageReference Include="ShellProgressBar" Version="5.2.0" />
+    </ItemGroup>
+
 </Project>
