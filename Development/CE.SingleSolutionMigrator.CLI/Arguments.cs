@@ -11,6 +11,10 @@ namespace CE.SingleSolutionMigrator.CLI
         public required string RootPath { get; set; }
         [Option('s', longName: "Solution", Required = true, HelpText = "The full path and filename of the solution to migrate.")]
         public required string Solution { get; set; }
+        [Option('o', longName: "CleanOutput", Required = false, Default = "true", HelpText = "If true, deletes the output folders from all components and Solutions folder.")]
+        public bool CleanOutput { get; set; }
+        [Option('d', longName: "DeleteAssemblies", Required = false, Default = "true", HelpText = "Specifies whether assemblies in _LKG folders are deleted.")]
+        public bool DeleteAssemblies { get; set; }
 
         [Option('p', longName: "Usep4", Group = "Perforce", Default = false, HelpText = "True to use p4 to check out files.")]
         public bool UseP4 { get; set; }

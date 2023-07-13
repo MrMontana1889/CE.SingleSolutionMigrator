@@ -2,7 +2,7 @@
   "profiles": {
     "CE.SingleSolutionMigrator.CLI": {
       "commandName": "Project",
-      "commandLineArgs": "-r \"C:\\OpenFlows\\Aspen"
+      "commandLineArgs": "-r \"E:\\OpenFlows\\Aspen\" -s \"E:\\OpenFlows\\Aspen\\Solutions\\WaterGEMS\\WaterGEMS.StandAlone.sln\" -o true -d true"
     }
   }
 }

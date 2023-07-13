@@ -11,11 +11,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Tools\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Microsoft.Build" Version="17.6.3" />
+      <PackageReference Include="NDepend.Path" Version="2.0.0" />
       <PackageReference Include="p4api.net" Version="2023.1.245.6134" />
       <PackageReference Include="ShellProgressBar" Version="5.2.0" />
     </ItemGroup>
