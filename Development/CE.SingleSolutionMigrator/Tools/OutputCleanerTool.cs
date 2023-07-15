@@ -74,8 +74,13 @@ namespace CE.SingleSolutionMigrator.Tools
                             {
                                 if (deleteAssemblies)
                                 {
-                                    try { Directory.Delete(net472Path); }
-                                    catch { }
+                                    var assemblyFiles = Directory.GetFiles(net472Path, "*.dll")
+                                        .Concat(Directory.GetFiles(net472Path, "*.pdb"));
+                                    foreach (var assemblyFile in assemblyFiles)
+                                    {
+                                        try { File.Delete(assemblyFile); }
+                                        catch { }
+                                    }
                                 }
                             }
                             else
@@ -93,8 +98,13 @@ namespace CE.SingleSolutionMigrator.Tools
                             {
                                 if (deleteAssemblies)
                                 {
-                                    try { Directory.Delete(net6Path); }
-                                    catch { }
+                                    var assemblyFiles = Directory.GetFiles(net6Path, "*.dll")
+                                        .Concat(Directory.GetFiles(net6Path, "*.pdb"));
+                                    foreach (var assemblyFile in assemblyFiles)
+                                    {
+                                        try { File.Delete(assemblyFile); }
+                                        catch { }
+                                    }
                                 }
                             }
                             else
