@@ -10,7 +10,7 @@ namespace CE.SingleSolutionMigrator.Migrators
     public class SolutionMigrator : BaseMigrator
     {
         #region Constructor
-        public SolutionMigrator(PerforceFacade? p4)
+        public SolutionMigrator(PerforceFacade p4)
             : base(p4)
         {
         }

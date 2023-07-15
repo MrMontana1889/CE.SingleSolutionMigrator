@@ -1,11 +1,6 @@
 ﻿// PerforceFacade.cs
 // Copyright (c) Kris Culin. All Rights Reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Perforce.P4;
 
 namespace CE.SingleSolutionMigrator.Support
@@ -86,7 +81,7 @@ namespace CE.SingleSolutionMigrator.Support
         #endregion
 
         #region Private Properties
-        private Connection? Connection { get; set; }
+        private Connection Connection { get; set; }
         private string ServerName { get; }
         private string UserName { get; }
         private string Password { get; }

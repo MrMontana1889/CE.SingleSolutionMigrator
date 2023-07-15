@@ -10,7 +10,7 @@ namespace CE.SingleSolutionMigrator.Migrators
     public abstract class BaseMigrator
     {
         #region Constructor
-        public BaseMigrator(PerforceFacade? p4)
+        public BaseMigrator(PerforceFacade p4)
         {
             P4 = p4;
         }
@@ -93,7 +93,7 @@ namespace CE.SingleSolutionMigrator.Migrators
         #endregion
 
         #region Protected Properties
-        protected PerforceFacade? P4 { get; }
+        protected PerforceFacade P4 { get; }
         protected ProjectCollection ProjectCollection { get; } = new ProjectCollection(ToolsetDefinitionLocations.Default);
         #endregion
 

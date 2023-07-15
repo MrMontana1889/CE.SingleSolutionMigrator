@@ -11,7 +11,7 @@ namespace CE.SingleSolutionMigrator.Migrators
     public class CSharpProjectMigrator : BaseProjectMigrator
     {
         #region Constructor
-        public CSharpProjectMigrator(PerforceFacade? p4, ProjectInSolution projectInSolution,
+        public CSharpProjectMigrator(PerforceFacade p4, ProjectInSolution projectInSolution,
             IDictionary<string, Guid> projectToGuid, IDictionary<string, ProjectInSolution> assemblyToProject)
             : base(p4, projectInSolution, projectToGuid, assemblyToProject)
         {
@@ -129,7 +129,7 @@ namespace CE.SingleSolutionMigrator.Migrators
                             if (!string.IsNullOrEmpty(hintPath))
                             {
                                 string assemblyName = Path.GetFileNameWithoutExtension(hintPath.Replace("$(TargetFramework)", "net472").Replace("$(Platform)", "x64"));
-                                if (AssemblyToProject.TryGetValue(assemblyName, out ProjectInSolution? referencedProject))
+                                if (AssemblyToProject.TryGetValue(assemblyName, out ProjectInSolution referencedProject))
                                 {
                                     ProjectRootElement referencedProjectRoot = ProjectRootElement.Open(referencedProject.AbsolutePath);
 
@@ -152,7 +152,7 @@ namespace CE.SingleSolutionMigrator.Migrators
                                         conditionFramework = NET472;
                                         assemblyName = $"{assemblyName}{NET472}";
                                     }
-                                    if (AssemblyToProject.TryGetValue(assemblyName, out ProjectInSolution? cppReferencedProject))
+                                    if (AssemblyToProject.TryGetValue(assemblyName, out ProjectInSolution cppReferencedProject))
                                     {
                                         ProjectRootElement referencedProjectRoot = ProjectRootElement.Open(cppReferencedProject.AbsolutePath);
 

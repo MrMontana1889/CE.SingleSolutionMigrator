@@ -10,7 +10,7 @@ namespace CE.SingleSolutionMigrator.Migrators
     public abstract class BaseProjectMigrator : BaseMigrator
     {
         #region Constructor
-        protected BaseProjectMigrator(PerforceFacade? p4, ProjectInSolution projectInSolution,
+        protected BaseProjectMigrator(PerforceFacade p4, ProjectInSolution projectInSolution,
             IDictionary<string, Guid> projectToGuid, IDictionary<string, ProjectInSolution> assemblyToProject)
             : base(p4)
         {

@@ -12,7 +12,7 @@ namespace CE.SingleSolutionMigrator.Migrators
     public class CPPProjectMigrator : BaseProjectMigrator
     {
         #region Constructor
-        public CPPProjectMigrator(PerforceFacade? p4, ProjectInSolution projectInSolution,
+        public CPPProjectMigrator(PerforceFacade p4, ProjectInSolution projectInSolution,
             IDictionary<string, Guid> projectToGuid, IDictionary<string, ProjectInSolution> assemblyToProject)
             : base(p4, projectInSolution, projectToGuid, assemblyToProject)
         {
@@ -142,7 +142,7 @@ namespace CE.SingleSolutionMigrator.Migrators
                                 if (!string.IsNullOrEmpty(hintPath))
                                 {
                                     string assemblyName = Path.GetFileNameWithoutExtension(hintPath.Replace("$(TargetFramework)", targetFramework).Replace("$(Platform)", "x64"));
-                                    if (AssemblyToProject.TryGetValue(assemblyName, out ProjectInSolution? referencedProject))
+                                    if (AssemblyToProject.TryGetValue(assemblyName, out ProjectInSolution referencedProject))
                                     {
                                         ProjectRootElement referencedProjectRoot = ProjectRootElement.Open(referencedProject.AbsolutePath);
 
@@ -161,7 +161,7 @@ namespace CE.SingleSolutionMigrator.Migrators
                                     {
                                         assemblyName = Path.GetFileNameWithoutExtension(hintPath);
                                         assemblyName = $"{assemblyName}.{targetFramework}";
-                                        if (AssemblyToProject.TryGetValue(assemblyName, out ProjectInSolution? cppReferencedProject))
+                                        if (AssemblyToProject.TryGetValue(assemblyName, out ProjectInSolution cppReferencedProject))
                                         {
                                             ProjectRootElement cppReferencedProjectRoot = ProjectRootElement.Open(cppReferencedProject.AbsolutePath);
 
@@ -246,7 +246,7 @@ namespace CE.SingleSolutionMigrator.Migrators
                 {
                     if (ProjectToGuid.TryGetValue($"HmiCoreLib{VCXPROJ}", out Guid coreLibGuid))
                     {
-                        if (AssemblyToProject.TryGetValue($"HmiCoreLib", out ProjectInSolution? hmiCoreLibProject))
+                        if (AssemblyToProject.TryGetValue($"HmiCoreLib", out ProjectInSolution hmiCoreLibProject))
                         {
                             string currentDir = Environment.CurrentDirectory;
                             try
@@ -299,7 +299,7 @@ namespace CE.SingleSolutionMigrator.Migrators
                 {
                     if (ProjectToGuid.TryGetValue($"GTL_static{VCXPROJ}", out Guid gtlGuid))
                     {
-                        if (AssemblyToProject.TryGetValue("GTLstatic", out ProjectInSolution? gtlProject))
+                        if (AssemblyToProject.TryGetValue("GTLstatic", out ProjectInSolution gtlProject))
                         {
                             string currentDir = Environment.CurrentDirectory;
                             try
