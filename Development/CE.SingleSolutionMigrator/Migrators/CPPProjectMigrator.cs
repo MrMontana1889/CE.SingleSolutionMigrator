@@ -225,7 +225,9 @@ namespace CE.SingleSolutionMigrator.Migrators
         #region Private Methods
         private void AddHmiCoreLibReferenceIfNeeded(ProjectRootElement project)
         {
-            if (project.FullPath.Contains("Haestad.Calculations.Pressure.ResultsReader", StringComparison.OrdinalIgnoreCase))
+            if ((project.FullPath.Contains("Haestad.Calculations.Pressure.ResultsReader", StringComparison.OrdinalIgnoreCase) ||
+                project.FullPath.Contains("DWNetworkParser", StringComparison.OrdinalIgnoreCase)) &&
+                !project.FullPath.Contains("DWNetworkParserLib", StringComparison.OrdinalIgnoreCase))
             {
                 bool hmiCoreLibAdded = false;
                 foreach (var itemGroup in project.ItemGroups)
@@ -270,6 +272,36 @@ namespace CE.SingleSolutionMigrator.Migrators
                         }
                     }
                 }
+
+                //$(SolutionDir)..\Ouptut\HmiCoreLib\$(Platform)\$(Configuration);
+                //$(SolutionDir)..\Output\GTL_static\$(Platform)\$(Configuration);
+                //$(SolutionDir)..\Output\Haestad.DWNetworkParserLib\$(Platform)\$(Configuration);
+                //%(AdditionalLibraryDirectories)
+
+                // Check to see if the AdditionalLibraryDirectories contains the relative path to HmiCoreLib output using $(SolutionDir)
+                // <ItemDefinitionGroup> -> <Link> -> <AdditionalLibraryDirectories>
+                var coreLibPath = @"$(SolutionDir)..\Output\HmiCoreLib\$(Platform)\$(Configuration)";
+                foreach (var itemDef in project.ItemDefinitionGroups)
+                {
+                    foreach (var def in itemDef.ItemDefinitions)
+                    {
+                        if (def.ElementName == "Link")
+                        {
+                            foreach (var meta in def.Metadata)
+                            {
+                                if (meta.ElementName == "AdditionalLibraryDirectories")
+                                {
+                                    if (!meta.Value.Contains(coreLibPath, StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        List<string> libDirectories = new List<string>(meta.Value.Split(';', StringSplitOptions.RemoveEmptyEntries));
+                                        libDirectories.Insert(0, coreLibPath);
+                                        meta.Value = string.Join(";", libDirectories);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             if (project.HasUnsavedChanges)
@@ -277,8 +309,9 @@ namespace CE.SingleSolutionMigrator.Migrators
         }
         private void AddGTLReferenceIfNeeded(ProjectRootElement project)
         {
-            if (project.FullPath.Contains("Haestad.Network", StringComparison.OrdinalIgnoreCase)
-                && !project.FullPath.Contains("NetworkLib"))
+            if ((project.FullPath.Contains("Haestad.Network", StringComparison.OrdinalIgnoreCase)
+                || project.FullPath.Contains("DWNetworkParser", StringComparison.OrdinalIgnoreCase))
+                && (!project.FullPath.Contains("NetworkLib") && !project.FullPath.Contains("DWNetworkParserLib", StringComparison.OrdinalIgnoreCase)))
             {
                 bool gtlFound = false;
                 foreach (var itemGroup in project.ItemGroups)
@@ -320,6 +353,48 @@ namespace CE.SingleSolutionMigrator.Migrators
                             finally
                             {
                                 Environment.CurrentDirectory = currentDir;
+                            }
+                        }
+                    }
+                }
+
+                //$(SolutionDir)..\Output\GTL_static\$(Platform)\$(Configuration);
+                var gtlLibPath = @"$(SolutionDir)..\Output\GTL_static\$(Platform)\$(Configuration)";
+
+                //$(SolutionDir)..\Output\Haestad.DWNetworkParserLib\$(Platform)\$(Configuration);
+                var parserLibPath = @"$(SolutionDir)..\Output\Haestad.DWNetworkParserLib\$(Platform)\$(Configuration)";
+
+                foreach (var itemDef in project.ItemDefinitionGroups)
+                {
+                    foreach (var def in itemDef.ItemDefinitions)
+                    {
+                        if (def.ElementName == "Link")
+                        {
+                            foreach (var meta in def.Metadata)
+                            {
+                                if (meta.ElementName == "AdditionalLibraryDirectories")
+                                {
+                                    // check to make sure the GTL relative path is present.
+                                    // Applies to Haestad.Network or Haestad.DWNetworkParser.
+                                    if (!meta.Value.Contains(gtlLibPath, StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        List<string> libDirectories = new List<string>(meta.Value.Split(';', StringSplitOptions.RemoveEmptyEntries));
+                                        libDirectories.Insert(0, gtlLibPath);
+                                        meta.Value = string.Join(";", libDirectories);
+                                    }
+
+                                    if (project.FullPath.Contains("Haestad.DWNetworkParser", StringComparison.OrdinalIgnoreCase) &&
+                                        !project.FullPath.Contains("DWNetworkParserLib", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        // Only check for the DWNetworkParserLib path if the project is Haestad.DWNetworkParser.
+                                        if (!meta.Value.Contains(parserLibPath, StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            List<string> libDirectories = new List<string>(meta.Value.Split(';', StringSplitOptions.RemoveEmptyEntries));
+                                            libDirectories.Insert(0, parserLibPath);
+                                            meta.Value = string.Join(";", libDirectories);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
