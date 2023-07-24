@@ -153,7 +153,7 @@ namespace CE.SingleSolutionMigrator.Migrators
                                         var referencedProjectRelativeFilePath = Path.Combine($"{referencedProjectRelativePath}",
                                             Path.GetFileName(referencedProject.AbsolutePath));
 
-                                        var reference = itemGroup.AddItem("ProjectReference", $"{referencedProjectRelativeFilePath}");
+                                        var reference = itemGroup.AddItem("ProjectReference", $@"$(MSBuildProjectDirectory)\{referencedProjectRelativeFilePath}");
                                         reference.AddMetadata("Project", $"{referencedProject.ProjectGuid.ToUpperInvariant()}");
                                         item.Parent.RemoveChild(item);
                                     }
@@ -172,7 +172,7 @@ namespace CE.SingleSolutionMigrator.Migrators
                                             var referencedProjectRelativeFilePath = Path.Combine($"{referencedProjectRelativePath}",
                                                 Path.GetFileName(cppReferencedProject.AbsolutePath));
 
-                                            var reference = itemGroup.AddItem("ProjectReference", $"{referencedProjectRelativeFilePath}");
+                                            var reference = itemGroup.AddItem("ProjectReference", $@"$(MSBuildProjectDirectory)\{referencedProjectRelativeFilePath}");
                                             reference.AddMetadata("Project", $"{cppReferencedProject.ProjectGuid.ToUpperInvariant()}");
                                             item.Parent.RemoveChild(item);
                                         }
@@ -217,12 +217,67 @@ namespace CE.SingleSolutionMigrator.Migrators
                 }
             }
 
+            AddReferencePath(project);
+
             if (project.HasUnsavedChanges)
                 project.Save();
         }
         #endregion
 
         #region Private Methods
+        private void AddReferencePath(ProjectRootElement project)
+        {
+            string referencePaths = GetReferencePaths(project);
+
+            foreach (var propertyGroup in project.PropertyGroups)
+            {
+                if (propertyGroup.Condition.Contains("'$(Configuration)|$(Platform)'=="))
+                {
+                    bool referencePathFound = false;
+                    foreach (var property in propertyGroup.Properties)
+                    {
+                        if (property.ElementName == "ReferencePath")
+                        {
+                            property.Value = $"{referencePaths};$(ReferencePath)";
+                            referencePathFound = true;
+                            break;
+                        }
+                    }
+                    if (!referencePathFound)
+                    {
+                        propertyGroup.AddProperty("ReferencePath", $"{referencePaths};$(ReferencePath)");
+                    }
+                }
+            }
+        }
+
+        private string GetReferencePaths(ProjectRootElement project)
+        {
+            string targetFramework = GetTargetFramework(project.FullPath);
+            List<string> references = new List<string>();
+            foreach (var itemGroup in project.ItemGroups)
+            {
+                foreach (var item in itemGroup.Items)
+                {
+                    var include = item.Include;
+                    string projectFileName = Path.GetFileName(include);
+                    string projectName = Path.GetFileNameWithoutExtension(projectFileName);
+                    if (Path.GetExtension(projectFileName) == CSPROJ)
+                    {
+                        string referencePath = $@"$(SolutionDir)..\Output\{projectName}\bin\$(Configuration)\{targetFramework}";
+                        references.Add(referencePath);
+                    }
+                    else if (Path.GetExtension(projectFileName) == VCXPROJ)
+                    {
+                        string referencePath = $@"$(SolutionDir)..\Output\{projectName}\$(Platform)\$(Configuration)";
+                        references.Add(referencePath);
+                    }
+                }
+            }
+
+            return string.Join(";", references);
+        }
+
         private void AddHmiCoreLibReferenceIfNeeded(ProjectRootElement project)
         {
             if ((project.FullPath.Contains("Haestad.Calculations.Pressure.ResultsReader", StringComparison.OrdinalIgnoreCase) ||

@@ -140,7 +140,7 @@ namespace CE.SingleSolutionMigrator.Migrators
                                     var referencedProjectRelativeFilePath = Path.Combine($"{referencedProjectRelativePath}",
                                         Path.GetFileName(referencedProject.AbsolutePath));
 
-                                    itemGroup.AddItem(PROJECTREFERENCEELEMENT, $"{referencedProjectRelativeFilePath}");
+                                    itemGroup.AddItem(PROJECTREFERENCEELEMENT, $@"$(MSBuildProjectDirectory)\{referencedProjectRelativeFilePath}");
                                     item.Parent.RemoveChild(item);
                                 }
                                 else
@@ -165,7 +165,7 @@ namespace CE.SingleSolutionMigrator.Migrators
                                         if (!string.IsNullOrEmpty(conditionFramework))
                                             referencedProjectRelativeFilePath = referencedProjectRelativeFilePath.Replace($"{conditionFramework}", "$(TargetFramework)");
 
-                                        itemGroup.AddItem(PROJECTREFERENCEELEMENT, $"{referencedProjectRelativeFilePath}");
+                                        itemGroup.AddItem(PROJECTREFERENCEELEMENT, $@"$(MSBuildProjectDirectory)\{referencedProjectRelativeFilePath}");
                                         item.Parent.RemoveChild(item);
                                     }
                                 }
